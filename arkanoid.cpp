@@ -54,20 +54,21 @@ struct persona{
 struct persona player[5];  
 
 //MAIN
-int main(){
+int main() {
     cargaArregloBKP();
     //menu()
     int cantidadPlayers = cantidadJugadores();
-    for(int i = 0; i < cantidadPlayers ;i++){
+    for (int i = 0; i < cantidadPlayers; i++) {
         puntos = 0;
         ganador = false;
         system("cls");
         printf("Ingrese el nombre del %i Jugador : ", i);
         cin >> player[i].nombre;
+        system("cls");
         configInicial();
         esconderCursor();
-        while (vidas>0)
-        {
+        reloadLvUno();
+        while (vidas > 0) {
             Sleep(50);
             display();
             tablero();
@@ -76,17 +77,17 @@ int main(){
         }
         player[i].puntos = puntos;
         player[i].ganador = ganador;
-        if (!player[i].ganador){
+        if (!player[i].ganador) {
             perder();
             Sleep(100);
-        }else {
+        } else {
             Sleep(100);
         }
     }
     mostrarPuntaje(cantidadPlayers);
 }
+
 void cargaArregloBKP(){
-    system("cls");
     for(int i = 0; i < 20; i++){
 		for(int j = 0; j < 30; j++){
 			if(lvUno[i][j] == '#'){
@@ -94,10 +95,20 @@ void cargaArregloBKP(){
             }else{
                 lvUnoBKP[i][j] = '.';
             }
-            // cout << lvUnoBKP[i][j];
+            cout << lvUnoBKP[i][j];
 		}
-        // cout << "\n";
 	}
+}
+void reloadLvUno() {
+    for (int i = 0; i < 11; i++) {
+        for (int j = 0; j < 30; j++) {
+            if (lvUnoBKP[i][j] == '#') {
+                lvUno[i][j] = '#';
+            } else {
+                lvUno[i][j] = '.';
+            }
+        }
+    }
 }
 
 bool ganar(){
@@ -177,6 +188,7 @@ public:
             }else {
                 vidas = 0;
                 system("cls");
+                cout << "\n";
                 cout << "No te asustes, rompiste todos los bloques, Ganaste!";
                 Sleep(3000);
             }
