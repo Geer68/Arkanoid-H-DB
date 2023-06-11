@@ -5,7 +5,7 @@
 #include <cstdlib>
 using namespace std;
 
-// Variables globales
+//Declaración de variables globales
 int vidas, puntos;
 bool ganador;
 int const screenHeight = 20;
@@ -21,11 +21,11 @@ char lvUno[11][30] = {".............................",
                       ".....#.#..#..#.#.#...#.#.....",
                       ".....#..#.#...#..###.#..#....",
                       ".............................",
-                      ".....#.#.#.#.#.#.#.#.#.#.....",
-                      "......#.#.#.#.#.#.#.#.#.#...."};
+                      ".#.#.#.#.#.#.#.#.#.#.#.#.#.#.",
+                      "....#.#.#.#.#.#.#.#.#.#.#...."};
 char lvUnoBKP[11][30];
 
-// Funciones
+//Declaración de funciones
 void cargaArregloBKP();
 void reloadLvUno();
 void esconderCursor();
@@ -45,7 +45,7 @@ void mostrarPuntaje(int cantidadJugadores);
 int cantidadJugadores();
 bool ganar();
 
-// Declaracion de struct
+// Declaracion de struct global
 struct persona
 {
 public:
@@ -53,164 +53,6 @@ public:
     int puntos;
     bool ganador;
 };
-// Instancia de persona
-struct persona player[5];
-
-// MAIN
-int main()
-{
-    cargaArregloBKP();
-    menu();
-    int cantidadPlayers = cantidadJugadores();
-    for (int i = 0; i < cantidadPlayers; i++)
-    {
-        puntos = 0;
-        ganador = false;
-        system("cls");
-        printf("Ingrese el nombre del %i Jugador : ", i);
-        cin >> player[i].nombre;
-        system("cls");
-        configInicial();
-        esconderCursor();
-        reloadLvUno();
-        while (vidas > 0)
-        {
-            Sleep(50);
-            display();
-            tablero();
-            inputmov();
-            mover();
-        }
-        player[i].puntos = puntos;
-        player[i].ganador = ganador;
-        if (!player[i].ganador)
-        {
-            perder();
-            Sleep(2000);
-        }
-        else
-        {
-            Sleep(2000);
-        }
-    }
-    mostrarPuntaje(cantidadPlayers);
-}
-
-void cargaArregloBKP()
-{
-    for (int i = 0; i < 20; i++)
-    {
-        for (int j = 0; j < 30; j++)
-        {
-            if (lvUno[i][j] == '#')
-            {
-                lvUnoBKP[i][j] = '#';
-            }
-            else
-            {
-                lvUnoBKP[i][j] = '.';
-            }
-            cout << lvUnoBKP[i][j];
-        }
-    }
-}
-void reloadLvUno()
-{
-    for (int i = 0; i < 11; i++)
-    {
-        for (int j = 0; j < 30; j++)
-        {
-            if (lvUnoBKP[i][j] == '#')
-            {
-                lvUno[i][j] = '#';
-            }
-            else
-            {
-                lvUno[i][j] = '.';
-            }
-        }
-    }
-}
-
-bool ganar()
-{
-    for (int i = 0; i < 20; i++)
-    {
-        for (int j = 0; j < 30; j++)
-        {
-            if (lvUno[i][j] == '#')
-            {
-                return false;
-            }
-        }
-    }
-    ganador = true;
-    return true;
-}
-void mostrarPuntaje(int cantidadPlayers)
-{
-    for (int i = 0; i < cantidadPlayers; i++)
-    {
-        cout << "El puntaje de " << player[i].nombre << " es :" << player[i].puntos << "\n";
-    }
-}
-
-int cantidadJugadores()
-{
-    system("cls");
-    int cantidad;
-    cout << "Ingrese cantidad de jugadores: ";
-    cin >> cantidad;
-    if (cantidad > 10)
-    {
-        cout << "La cantidad de jugadores no puede ser mayor a 10. Intente nuevamente.\n";
-        cantidad = cantidadJugadores();
-    }
-    return cantidad;
-}
-
-void menu()
-{   
-    system("cls");
-    cout << "Juego creado por Ger y Valen \n";
-    cout << "\n";
-    int opcion, salir;
-    submenu1();
-    cin >> opcion;
-    if(opcion == 2){
-        system("cls");
-        reglasInstrucciones();
-        cin >> salir;
-        if(salir == 0){
-            menu();
-        }
-    }else {
-        return;
-    }
-}
-
-void submenu1()
-{
-    cout << "1= Comenzar  2= Reglas/Instucciones  3= Salir \n";
-    cout << "Elegi una opcion: ";
-}
-
-void reglasInstrucciones()
-{
-    cout << "_____Reglas - Instrucciones_____\n";
-    cout << "\n";
-    cout << "1- Si la pelota toca el suelo -1 vida \n";
-    cout << "2- Romper un bloque otorga 5 puntos! \n";
-    cout << "3- Los resultados se mostraran al finalizar de jugar todos los jugadores \n";
-    cout << "4- Son 5 vidas por jugador \n";
-    cout << "5- Si se rompen todos los bloques, con dejar caer la pelota ganaras!! \n";
-    cout << "\n";
-    cout << "AVISO: Solo es posible hasta 10 jugadores \n";
-    cout << "\n";
-    cout << "0= Para volver al menu principal \n";
-
-}
-
 struct Ball
 {
 public:
@@ -415,9 +257,167 @@ public:
     }
 };
 
+// Instancia de las estructuras
+struct persona player[10];
 // Definimos el objeto de la clase
 Ball ball;
 Paddle paddle;
+
+// main()
+int main()
+{
+    cargaArregloBKP();
+    menu();
+    int cantidadPlayers = cantidadJugadores();
+    for (int i = 0; i < cantidadPlayers; i++)
+    {
+        puntos = 0;
+        ganador = false;
+        system("cls");
+        printf("Ingrese el nombre del %i Jugador : ", i);
+        cin >> player[i].nombre;
+        system("cls");
+        configInicial();
+        esconderCursor();
+        reloadLvUno();
+        while (vidas > 0)
+        {
+            Sleep(50);
+            display();
+            tablero();
+            inputmov();
+            mover();
+        }
+        player[i].puntos = puntos;
+        player[i].ganador = ganador;
+        perder();
+    }
+    mostrarPuntaje(cantidadPlayers);
+}
+
+
+//Definición de funciones
+void cargaArregloBKP()
+{
+    for (int i = 0; i < 20; i++)
+    {
+        for (int j = 0; j < 30; j++)
+        {
+            if (lvUno[i][j] == '#')
+            {
+                lvUnoBKP[i][j] = '#';
+            }
+            else
+            {
+                lvUnoBKP[i][j] = '.';
+            }
+            cout << lvUnoBKP[i][j];
+        }
+    }
+}
+void reloadLvUno()
+{
+    for (int i = 0; i < 11; i++)
+    {
+        for (int j = 0; j < 30; j++)
+        {
+            if (lvUnoBKP[i][j] == '#')
+            {
+                lvUno[i][j] = '#';
+            }
+            else
+            {
+                lvUno[i][j] = '.';
+            }
+        }
+    }
+}
+
+bool ganar()
+{
+    for (int i = 0; i < 20; i++)
+    {
+        for (int j = 0; j < 30; j++)
+        {
+            if (lvUno[i][j] == '#')
+            {
+                return false;
+            }
+        }
+    }
+    ganador = true;
+    return true;
+}
+void mostrarPuntaje(int cantidadPlayers)
+{   
+    system("cls");
+    for (int i = 0; i < cantidadPlayers; i++)
+    {
+        cout << "El puntaje de " << player[i].nombre << " es :" << player[i].puntos << "\n";
+    }
+}
+
+int cantidadJugadores()
+{
+    system("cls");
+    int cantidad;
+    cout << "Ingrese cantidad de jugadores: ";
+    cin >> cantidad;
+    if (cantidad > 10)
+    {
+        cout << "La cantidad de jugadores no puede ser mayor a 10. Intente nuevamente.\n";
+        cantidad = cantidadJugadores();
+    }
+    return cantidad;
+}
+
+void menu()
+{   
+    system("cls");
+    cout << "Juego creado por Ger y Valen \n";
+    cout << "\n";
+    int opcion, salir;
+    submenu1();
+    cin >> opcion;
+    if(opcion == 2){
+        system("cls");
+        reglasInstrucciones();
+        cin >> salir;
+        if(salir == 0){
+            menu();
+        }
+    }else if(opcion == 3){
+        exit(0);
+    }else {
+
+        return;
+    }
+}
+
+void submenu1()
+{
+    cout << "1= Comenzar  2= Reglas/Instucciones  3= Salir \n";
+    cout << "Elegi una opcion: ";
+}
+
+void reglasInstrucciones()
+{
+    cout << "_____Reglas - Instrucciones_____\n";
+    cout << "\n";
+    cout << "1- Si la pelota toca el suelo -1 vida \n";
+    cout << "2- Romper un bloque otorga 1 puntos! \n";
+    cout << "3- Los resultados se mostraran al finalizar de jugar todos los jugadores \n";
+    cout << "4- Son 5 vidas por jugador \n";
+    cout << "5- Si se rompen todos los bloques, con dejar caer la pelota ganaras!! \n";
+    cout << "\n";
+    cout << "AVISO: Solo es posible hasta 10 jugadores \n";
+    cout << "\n";
+    cout << "0= Para volver al menu principal \n";
+
+}
+
+
+
 
 void crearLadrillo()
 {
@@ -470,7 +470,7 @@ void configInicial()
     srand(time(NULL));
     pierdeVida = false;
     vidas = 5;
-    paddle.x = screenWidth / 2 - 5;
+    paddle.x = screenWidth / 2;
     paddle.y = screenHeight - screenHeight / 7 - 1;
     paddle.velocidad = 1;
     paddle.delay = 1;
@@ -508,16 +508,18 @@ void inputmov()
         ball.direccion = rand() % 2;
 }
 
-// Limpieza de la consola y cout
 void perder()
 {
     system("cls");
-    cout << "----------------- \n";
-    cout << "    Perdiste :( \n";
-    cout << "----------------- \n";
-    system("cls");
+    cout    << "ŽŽŽŽŽŽ  ŽŽŽŽŽŽŽ ŽŽŽŽŽŽ  ŽŽŽŽŽŽ  ŽŽ ŽŽŽŽŽŽŽ ŽŽŽŽŽŽŽŽ ŽŽŽŽŽŽŽ \n"
+	   		<< "ŽŽ   ŽŽ ŽŽ      ŽŽ   ŽŽ ŽŽ   ŽŽ ŽŽ ŽŽ         ŽŽ    ŽŽ      \n"
+	   		<< "ŽŽŽŽŽŽ  ŽŽŽŽŽ   ŽŽŽŽŽŽ  ŽŽ   ŽŽ ŽŽ ŽŽŽŽŽŽŽ    ŽŽ    ŽŽŽŽŽ   \n"
+	   		<< "ŽŽ      ŽŽ      ŽŽ   ŽŽ ŽŽ   ŽŽ ŽŽ      ŽŽ    ŽŽ    ŽŽ      \n"
+	   		<< "ŽŽ      ŽŽŽŽŽŽŽ ŽŽ   ŽŽ ŽŽŽŽŽŽ  ŽŽ ŽŽŽŽŽŽŽ    ŽŽ    ŽŽŽŽŽŽŽ \n";
+    getch();
+    Sleep(2000);
 }
-// Esconder cursor
+
 void esconderCursor()
 {
     CONSOLE_CURSOR_INFO cursor;
@@ -526,7 +528,7 @@ void esconderCursor()
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor);
 }
 
-// Mueve el cursor de la consola
+//Permite posicionamiento en la consola
 void recorreXY(int x, int y)
 {
     COORD c;
@@ -535,15 +537,14 @@ void recorreXY(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
 
-// Reemplazo numeros x caracteres
+//Muestra caracteres en vez de numeros
 void display()
 {
-    // Agregar quien esta jugando
     recorreXY(2, 1);
     cout << "Vidas: " << vidas;
     recorreXY(22, 1);
     cout << "Puntos: " << puntos;
-    // 9=Laterales 8=Puntaje 7=Superior 5=Pelota 2=Bloques 1=Barra
+    // 9=Laterales 8=Pierde  7=Superior 5=Pelota 2=Bloques 1=Barra
     for (int i = 0; i < screenHeight; i++)
     {
         for (int k = 0; k < screenWidth; k++)
